@@ -30,6 +30,10 @@ public class Card {
         mSuit = suit;
     }
     
+    public CardValue getValue() {
+        return mValue;
+    }
+    
     private CardValue mValue;
     private CardSuit  mSuit;
 }
