@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
-    final int cMultiplier1 = 14;
+    final int cMultiplier1 = 13;
     final int cMultiplier2 = cMultiplier1 * cMultiplier1;
     final int cMultiplier3 = cMultiplier2 * cMultiplier1;
 

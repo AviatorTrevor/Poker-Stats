@@ -50,7 +50,7 @@ public class Game {
                                 }
                             }
                             else { //else there was a clear winner
-                                mPlayers.get(indexOfWinningPlayer);
+                                mPlayers.get(indexOfWinningPlayer).addWin();
                             }
                         }
                     }
@@ -59,7 +59,7 @@ public class Game {
         }
         
         for (int i = 0; i < mPlayers.size(); i++) {
-            System.out.println("Player #" + (i + 1) + "Wins " + mPlayers.get(i).oddsOfWinningHand() + "%;  Ties " + mPlayers.get(i).oddsOfTieingHand() + "%");
+            System.out.println("Player #" + (i + 1) + " Wins " + mPlayers.get(i).oddsOfWinningHand() + "%;  Ties " + mPlayers.get(i).oddsOfTieingHand() + "%");
         }
     }
     

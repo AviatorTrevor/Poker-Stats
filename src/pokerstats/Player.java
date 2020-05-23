@@ -1,13 +1,14 @@
 package pokerstats;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Player {
     public void dealHoleCards(Card cardA, Card cardB) {
         insertPlayerCardSorted(cardA);
         insertPlayerCardSorted(cardB);
-        mHoleCards = mPlayerCards;
+        mHoleCards.addAll(mPlayerCards);
     }
     
     //returns score of your hand given these community cards + your hole cards
@@ -27,15 +28,15 @@ public class Player {
     
     private void resetCommunityCards() {
         mPlayerCards.clear();
-        mPlayerCards = mHoleCards;
+        mPlayerCards.addAll(mHoleCards);
     }
     
     public double oddsOfWinningHand() {
-        return (double)mWins / mPossibleHands;
+        return 100 * (double)mWins / mPossibleHands;
     }
     
     public double oddsOfTieingHand() {
-        return (double)mTies / mPossibleHands;
+        return 100 * (double)mTies / mPossibleHands;
     }
     
     public void addWin() {
