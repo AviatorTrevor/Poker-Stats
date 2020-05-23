@@ -21,6 +21,10 @@ public class CardDeck {
         return mCards.remove(index);
     }
     
+    public Card dealSpecificCard(CardValue value, CardSuit suit) {
+        return mCards.remove(suit.ordinal() * 13 + value.ordinal());
+    }
+    
     public Card dealRandomCard() {
         Random rand = new Random();
         return mCards.remove(rand.nextInt(size()));

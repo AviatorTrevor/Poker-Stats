@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
-    final int cMultiplier1 = 13;
+    final int cMultiplier1 = 14;
     final int cMultiplier2 = cMultiplier1 * cMultiplier1;
     final int cMultiplier3 = cMultiplier2 * cMultiplier1;
 
@@ -41,49 +41,41 @@ public class Hand {
                                 if (mHandScore > mHighestHandScore) {
                                     mHighestHandScore = mHandScore;
                                 }
-                                continue;
                             }
                             else if (checkForFourOfAKind(hand)) {
                                 if (mHandScore > mHighestHandScore) {
                                     mHighestHandScore = mHandScore;
                                 }
-                                continue;
                             }
                             else if (checkForFullHouse(hand)) {
                                 if (mHandScore > mHighestHandScore) {
                                     mHighestHandScore = mHandScore;
                                 }
-                                continue;
                             }
                             else if (checkForFlush(hand)) {
                                 if (mHandScore > mHighestHandScore) {
                                     mHighestHandScore = mHandScore;
                                 }
-                                continue;
                             }
                             else if (checkForStraight(hand)) {
                                 if (mHandScore > mHighestHandScore) {
                                     mHighestHandScore = mHandScore;
                                 }
-                                continue;
                             }
                             else if (checkForThreeOfAKind(hand)) {
                                 if (mHandScore > mHighestHandScore) {
                                     mHighestHandScore = mHandScore;
                                 }
-                                continue;
                             }
                             else if (checkForTwoPair(hand)) {
                                 if (mHandScore > mHighestHandScore) {
                                     mHighestHandScore = mHandScore;
                                 }
-                                continue;
                             }
                             else if (checkForOnePair(hand)) {
                                 if (mHandScore > mHighestHandScore) {
                                     mHighestHandScore = mHandScore;
                                 }
-                                continue;
                             }
                             else {
                                 calculateHighCardScore(hand);
@@ -120,7 +112,13 @@ public class Hand {
         else if (isFlush && hand.get(cHighestCardIndex).getValue() == CardValue.Ace && hand.get(0).getValue() != CardValue.Ace) {
             Card ace = hand.remove(cHighestCardIndex);
             hand.add(0, ace);
-            return checkForStraightFlush(hand);
+            boolean straightFlushLowAce = checkForStraightFlush(hand);
+            
+            //add the ace back to the end, because this effects the "hand" list for other functions to check
+            ace = hand.remove(0);
+            hand.add(ace);
+            
+            return straightFlushLowAce;
         }
         else {
             return false;
@@ -130,9 +128,9 @@ public class Hand {
     //no kicker, but compare value. only a tie if the common cards are the four-of-a-kind
     private boolean checkForFourOfAKind(List<Card> hand) {
         int starting = 1;
-        int ending = cHighestCardIndex;
+        int ending = 4;
         for (int i = starting; i < ending; i++) {
-            if (!hand.get(i - 1).equals(hand.get(i))) {
+            if (!hand.get(i - 1).getValue().equals(hand.get(i).getValue())) {
                 if (starting == 1) {
                     starting = 2;
                     ending = 5;
@@ -168,7 +166,7 @@ public class Hand {
     
     //no kicker, only check highest value card to resolve tie breaker. potentially a tie if common cards are the highest flush.
     private boolean checkForFlush(List<Card> hand) {
-        for (int i = 1; i < cHighestCardIndex; i++) {
+        for (int i = 1; i < hand.size(); i++) {
             if (!hand.get(i).getSuit().equals(hand.get(i - 1).getSuit())) {
                 return false;
             }
@@ -194,7 +192,13 @@ public class Hand {
         else if (hand.get(cHighestCardIndex).getValue() == CardValue.Ace && hand.get(0).getValue() != CardValue.Ace) {
             Card ace = hand.remove(cHighestCardIndex);
             hand.add(0, ace);
-            return checkForStraight(hand);
+            boolean straightLowAce = checkForStraight(hand);
+            
+            //add the ace back to the end, because this effects the "hand" list for other functions to check
+            ace = hand.remove(0);
+            hand.add(ace);
+            
+            return straightLowAce;
         }
         else {
             return false;
@@ -203,7 +207,7 @@ public class Hand {
     
     //potentially 2 kickers. potentially tie.
     private boolean checkForThreeOfAKind(List<Card> hand) {
-        for (int i = 2; i < cHighestCardIndex; i++) {
+        for (int i = 2; i < hand.size(); i++) {
             if (hand.get(i).getValue().equals(hand.get(i - 1).getValue()) && hand.get(i).getValue().equals(hand.get(i - 2).getValue())) {
                 mHandScore = cThreeOfAKind + cMultiplier2 * hand.get(i).getScoreValue();
                 
@@ -248,7 +252,7 @@ public class Hand {
     
     //potentially 3 kickers. potentially tie.
     private boolean checkForOnePair(List<Card> hand) {
-        for (int i = 1; i < cHighestCardIndex; i++) {
+        for (int i = 1; i < hand.size(); i++) {
             if (hand.get(i).getValue().equals(hand.get(i - 1).getValue())) {
                 mHandScore = cOnePair + cMultiplier3 * hand.get(i).getScoreValue();
                 if (i == 1) {
