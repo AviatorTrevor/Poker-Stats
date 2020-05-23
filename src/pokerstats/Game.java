@@ -19,10 +19,10 @@ public class Game {
         }
         
         for (int a = 0; a < mCardDeck.size() - 4; a++) {
-            for (int b = 1; b < mCardDeck.size() - 3; b++) {
-                for (int c = 2; c < mCardDeck.size() - 2; c++) {
-                    for (int d = 3; d < mCardDeck.size() - 1; d++) {
-                        for (int e = 4; e < mCardDeck.size(); e++) {
+            for (int b = a + 1; b < mCardDeck.size() - 3; b++) {
+                for (int c = b + 1; c < mCardDeck.size() - 2; c++) {
+                    for (int d = c + 1; d < mCardDeck.size() - 1; d++) {
+                        for (int e = d + 1; e < mCardDeck.size(); e++) {
                             int indexOfWinningPlayer = 0;
                             int highestScore = 0;
                             List<Integer> indexesOfPossibleTies = new ArrayList<>();

@@ -34,6 +34,10 @@ public class Card {
         return mValue;
     }
     
+    public int getScoreValue() {
+        return mValue.ordinal() + 1;
+    }
+    
     public CardSuit getSuit() {
         return mSuit;
     }
