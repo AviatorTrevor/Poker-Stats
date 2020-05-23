@@ -24,6 +24,10 @@ public class Hand {
         sortCards();
     }
     
+    public int getHandScore() {
+        return mHandScore;
+    }
+    
     private void sortCards() {
         sort();
     }
@@ -31,11 +35,12 @@ public class Hand {
     private void sort() {
         boolean sorted = false;
         for (int i = 0; i < mHand.size() - 1 && !sorted; i++) {
-            if (mHand.get(i).getValue().compareTo(mHand.get(i).getValue())) {
+            /*if (mHand.get(i).getValue().compareTo(mHand.get(i).getValue())) {
                 
-            }
+            }*/
         }
     }
     
     private List<Card> mHand = new ArrayList<>();
+    private int mHandScore;
 }

@@ -10,7 +10,7 @@ public class PokerStats {
 
     public static void main(String[] args) {
         System.out.println("Starting at " + getCurrentTime());
-        Game theGame = new Game();
+        Game theGame = new Game(2); //2 players get random cards
         System.out.println("Ending at " + getCurrentTime());
     }
     

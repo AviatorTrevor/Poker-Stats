@@ -34,6 +34,10 @@ public class Card {
         return mValue;
     }
     
+    public CardSuit getSuit() {
+        return mSuit;
+    }
+    
     private CardValue mValue;
     private CardSuit  mSuit;
 }

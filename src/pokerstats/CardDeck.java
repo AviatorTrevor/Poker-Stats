@@ -2,6 +2,7 @@ package pokerstats;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class CardDeck {
     public CardDeck() {
@@ -16,8 +17,17 @@ public class CardDeck {
         return mCards.size();
     }
     
-    public Card get(int index) {
+    public Card dealSpecificCard(int index) {
         return mCards.remove(index);
+    }
+    
+    public Card dealRandomCard() {
+        Random rand = new Random();
+        return mCards.remove(rand.nextInt(size()));
+    }
+    
+    public Card getCommunityCard(int index) {
+        return mCards.get(index);
     }
     
     private List<Card> mCards = new ArrayList<>();
