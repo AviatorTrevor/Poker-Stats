@@ -6,17 +6,17 @@ import java.util.List;
 public class Hand {
     final int cMultiplier1 = 14;
     final int cMultiplier2 = cMultiplier1 * cMultiplier1;
-    final int cMultiplier3 = cMultiplier2 * cMultiplier1;
+    final int cMultiplier3 = cMultiplier2 * cMultiplier1; 
+    final int cMultiplier4 = cMultiplier3 * cMultiplier1;
 
-    final int cStraightFlush = 1800000;
-    final int cFourOfAKind = 1700000;
-    final int cFullHouse = 1600000;
+    final int cStraightFlush = 2700000;
+    final int cFourOfAKind = 2600000;
+    final int cFullHouse = 2500000;
     final int cFlush = 1500000;
     final int cStraight = 1400000;
     final int cThreeOfAKind = 1300000;
     final int cTwoPair = 1200000;
     final int cOnePair = 1000000;
-    final int cHighCard = cMultiplier3 * cMultiplier1;
     
     final int cHighestCardIndex = 4;
     
@@ -164,14 +164,19 @@ public class Hand {
         return false;
     }
     
-    //no kicker, only check highest value card to resolve tie breaker. potentially a tie if common cards are the highest flush.
+    //no kicker, ties break with highest hole care. potentially a tie if common cards are the highest flush.
     private boolean checkForFlush(List<Card> hand) {
         for (int i = 1; i < hand.size(); i++) {
             if (!hand.get(i).getSuit().equals(hand.get(i - 1).getSuit())) {
                 return false;
             }
         }
-        mHandScore = cFlush + hand.get(cHighestCardIndex).getScoreValue();
+        mHandScore = cFlush + hand.get(cHighestCardIndex).getScoreValue()
+                   + cMultiplier4 * hand.get(4).getScoreValue()
+                   + cMultiplier3 * hand.get(3).getScoreValue()
+                   + cMultiplier2 * hand.get(2).getScoreValue()
+                   + cMultiplier1 * hand.get(1).getScoreValue()
+                   + hand.get(0).getScoreValue();
         return true;
     }
     
@@ -274,7 +279,7 @@ public class Hand {
     
     //potentially 4 kickers. potentially tie.
     private void calculateHighCardScore(List<Card> hand) {
-        mHandScore = cHighCard * hand.get(cHighestCardIndex).getScoreValue() + cMultiplier3 * hand.get(3).getScoreValue() + cMultiplier2 * hand.get(2).getScoreValue()
+        mHandScore = cMultiplier4 * hand.get(cHighestCardIndex).getScoreValue() + cMultiplier3 * hand.get(3).getScoreValue() + cMultiplier2 * hand.get(2).getScoreValue()
                    + cMultiplier1 * hand.get(1).getScoreValue() + hand.get(0).getScoreValue();
     }
     

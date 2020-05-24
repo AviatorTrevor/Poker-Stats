@@ -5,8 +5,10 @@ import java.util.List;
 
 public class Game {
     private CardDeck mCardDeck = new CardDeck();
-
-    public Game(int numberOfPlayers) {
+    
+    //debug test game
+    public Game() {
+        mStartTime = System.currentTimeMillis();
         
         Player playerA = new Player();
         playerA.dealHoleCards(new Card(CardValue.Four, CardSuit.Clubs), new Card(CardValue.Jack, CardSuit.Spades));
@@ -14,17 +16,30 @@ public class Game {
         Player playerB = new Player();
         playerB.dealHoleCards(new Card(CardValue.Ten, CardSuit.Spades), new Card(CardValue.King, CardSuit.Diamonds));
         
+        System.out.print("Player #1: ");
         int scoreA = playerA.dealCommunityCards(new Card(CardValue.Two, CardSuit.Spades),
                                                 new Card(CardValue.Three, CardSuit.Spades),
                                                 new Card(CardValue.Eight, CardSuit.Spades),
                                                 new Card(CardValue.Jack, CardSuit.Hearts),
                                                 new Card(CardValue.Queen, CardSuit.Spades), true);
         
+        System.out.print("Player #2: ");
         int scoreB = playerB.dealCommunityCards(new Card(CardValue.Two, CardSuit.Spades),
                                                 new Card(CardValue.Three, CardSuit.Spades),
                                                 new Card(CardValue.Eight, CardSuit.Spades),
                                                 new Card(CardValue.Jack, CardSuit.Hearts),
                                                 new Card(CardValue.Queen, CardSuit.Spades), true);
+        
+        mPlayers.add(playerA);
+        mPlayers.add(playerB);
+        System.out.println("Player #1 Score: " + scoreA);
+        System.out.println("Player #2 Score: " + scoreB);
+        
+        setRunTime();
+    }
+
+    public Game(int numberOfPlayers) {
+        mStartTime = System.currentTimeMillis();
         
         for (int i = 0; i < numberOfPlayers; i++) {
             Player player = new Player();
@@ -35,7 +50,19 @@ public class Game {
             System.out.println("Player #" + (i + 1) + " is dealt " + cardA.getValue().name() + " of " + cardA.getSuit().name()
                 + " + " + cardB.getValue().name() + " of " + cardB.getSuit().name());
         }
-        
+        everyPossibleGame();
+        setRunTime();
+    }
+    
+    //this assumes players have been dealt hole cards
+    public Game(List<Player> players) {
+        mStartTime = System.currentTimeMillis();
+        mPlayers = players;
+        everyPossibleGame();
+        setRunTime();
+    }
+    
+    private void everyPossibleGame() {
         int counter = 0;
         for (int a = 0; a < mCardDeck.size() - 4; a++) {
             for (int b = a + 1; b < mCardDeck.size() - 3; b++) {
@@ -43,7 +70,7 @@ public class Game {
                     for (int d = c + 1; d < mCardDeck.size() - 1; d++) {
                         for (int e = d + 1; e < mCardDeck.size(); e++) {
                             counter++;
-                            boolean printDebug = true;//(counter % 10000 == 0);
+                            boolean printDebug = false;//(counter % 10000 == 0);
                             int indexOfWinningPlayer = 0;
                             int highestScore = 0;
                             List<Integer> indexesOfPossibleTies = new ArrayList<>();
@@ -91,9 +118,19 @@ public class Game {
         }
         
         for (int i = 0; i < mPlayers.size(); i++) {
-            System.out.println("Player #" + (i + 1) + " Wins " + mPlayers.get(i).oddsOfWinningHand() + "%;  Ties " + mPlayers.get(i).oddsOfTieingHand() + "%");
+            System.out.println(counter + " iterations. Player #" + (i + 1) + " Wins " + mPlayers.get(i).oddsOfWinningHand() + "%;  Ties " + mPlayers.get(i).oddsOfTieingHand() + "%");
         }
     }
     
+    private void setRunTime() {
+        mRunTime = (System.currentTimeMillis() - mStartTime) / 1000.0;
+    }
+    
+    public double getSecondsToPlayAllGames() {
+        return mRunTime;
+    }
+    
     private List<Player> mPlayers = new ArrayList<>();
+    private final double mStartTime;
+    private double mRunTime;
 }

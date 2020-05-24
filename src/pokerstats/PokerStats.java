@@ -3,21 +3,30 @@
  */
 package pokerstats;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PokerStats {
 
     public static void main(String[] args) {
-        System.out.println("Starting at " + getCurrentTime());
-        Game theGame = new Game(2); //2 players get random cards
-        System.out.println("Ending at " + getCurrentTime());
+        playRandomGame(2); //2 players, random hole cards
     }
     
-    public static String getCurrentTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        return dtf.format(now);
+    private static void playRandomGame (int numberOfPlayers) {
+        Game theGame = new Game(numberOfPlayers);
+        System.out.println("Completed odds in " + theGame.getSecondsToPlayAllGames() + " seconds");
+    }
+    
+    private static void playEveryPossiblePokerGame(int numberOfPlayers) {
+        CardDeck cardDeck = new CardDeck();
+        List<Player> players = new ArrayList<>();
+        for (int i = 0; i < numberOfPlayers; i++) {
+            for (int a = 0; a < cardDeck.size() - 1; a++) {
+                for (int b = 0; b < cardDeck.size(); b++) {
+                    //////////TODO
+                }
+            }
+        }
     }
     
 }
