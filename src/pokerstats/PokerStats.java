@@ -18,12 +18,13 @@ public class PokerStats {
     }
     
     private static void playEveryPossiblePokerGame(int numberOfPlayers) {
+        //I haven't finishing implementing this, but this will go through every possible poker game imaginable given X number of players
         CardDeck cardDeck = new CardDeck();
         List<Player> players = new ArrayList<>();
         for (int i = 0; i < numberOfPlayers; i++) {
             for (int a = 0; a < cardDeck.size() - 1; a++) {
                 for (int b = 0; b < cardDeck.size(); b++) {
-                    //////////TODO
+                    //TODO
                 }
             }
         }
