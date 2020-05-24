@@ -24,7 +24,7 @@ public class PokerStats {
         for (int i = 0; i < numberOfPlayers; i++) {
             for (int a = 0; a < cardDeck.size() - 1; a++) {
                 for (int b = 0; b < cardDeck.size(); b++) {
-                    //TODO
+                    //TODO need to finish
                 }
             }
         }
