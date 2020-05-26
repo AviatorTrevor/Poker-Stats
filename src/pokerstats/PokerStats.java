@@ -9,8 +9,8 @@ import java.util.List;
 public class PokerStats {
 
     public static void main(String[] args) {
-        //playRandomGame(2); //2 players, random hole cards
-        playEveryPossiblePokerGame(2);
+        playRandomGame(2); //2 players, random hole cards
+        //playEveryPossiblePokerGame(2); //takes about 18 days on my computer to find every game possible for 2 people
     }
     
     private static double playSpecificHoleCards() {
@@ -43,7 +43,12 @@ public class PokerStats {
         int counter = 1;
         for (int i = 0; i < numberOfPlayers; i++) {
             playerHoleCardIndexes.add(i * 2);
-            playerHoleCardIndexes.add(i * 2 + 1);
+            if (i != numberOfPlayers - 1) {
+                playerHoleCardIndexes.add(i * 2 + 1);
+            }
+            else {
+                playerHoleCardIndexes.add(i * 2);
+            }
         }
 
         while (dealCards(playerHoleCardIndexes, playerHoleCardIndexes.size() - 1)) {
@@ -59,24 +64,34 @@ public class PokerStats {
                 players.clear();
                 counter++;
             }
+            for (int i = 0; i < playerHoleCardIndexes.size(); i++) {
+                System.out.print(playerHoleCardIndexes.get(i) + ", ");
+            }
+            System.out.println();
         }
+        System.out.println(counter + " possible games");
     }
     
     private static boolean dealCards(List<Integer> cardIndexes, int indexToIncrement) {
         int value = cardIndexes.get(indexToIncrement);
         if (indexToIncrement == cardIndexes.size() - 1) {
-            if (value + 1 < CardDeck.cCardsInDeck) {
-                cardIndexes.set(indexToIncrement, value + 1);
+            value++;
+            if (value < CardDeck.cCardsInDeck) {
+                cardIndexes.set(indexToIncrement, value);
                 return true;
             }
             else {
-                cardIndexes.set(indexToIncrement, cardIndexes.get(indexToIncrement - 1) + 2);
+                value = cardIndexes.get(indexToIncrement - 1) + 2;
+                if (value < CardDeck.cCardsInDeck) {
+                  cardIndexes.set(indexToIncrement, value);
+                }
                 return dealCards(cardIndexes, indexToIncrement - 1);
             }
         }
         else if (indexToIncrement == 0) {
-            if (value + 1 < cardIndexes.get(indexToIncrement + 1)) {
-                cardIndexes.set(indexToIncrement, value + 1);
+            value++;
+            if (value < cardIndexes.get(indexToIncrement + 1)) {
+                cardIndexes.set(indexToIncrement, value);
                 return true;
             }
             else {
@@ -84,12 +99,16 @@ public class PokerStats {
             }
         }
         else {
-            if (value + 1 < cardIndexes.get(indexToIncrement + 1)) {
-                cardIndexes.set(indexToIncrement, value + 1);
+            value++;
+            if (value < cardIndexes.get(indexToIncrement + 1)) {
+                cardIndexes.set(indexToIncrement, value);
                 return true;
             }
             else {
-                cardIndexes.set(indexToIncrement, cardIndexes.get(indexToIncrement - 1) + 2);
+                value = cardIndexes.get(indexToIncrement - 1) + 2;
+                if (value < cardIndexes.get(indexToIncrement + 1)) {
+                    cardIndexes.set(indexToIncrement, value);
+                }
                 return dealCards(cardIndexes, indexToIncrement - 1);
             }
         }
