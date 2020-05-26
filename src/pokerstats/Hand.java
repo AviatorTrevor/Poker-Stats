@@ -216,6 +216,7 @@ public class Hand extends Thread {
     @Override
     public void run() {
         synchronized (mHandMutex) {
+            mGame.threadFinished(this);
             try {
                 mHandMutex.wait();
             }
@@ -320,12 +321,9 @@ public class Hand extends Thread {
             else { //else there was a clear winner
                 mPlayers.get(indexOfWinningPlayer).addWin();
             }
-            System.out.println("Finished hand " + Thread.currentThread().getId());
             synchronized (mHandMutex) {
-                System.out.println("Notifying Game hand ended " + Thread.currentThread().getId());
                 mGame.threadFinished(this);
                 try {
-                    System.out.println("Going to sleep " + Thread.currentThread().getId());
                     mHandMutex.wait();
                 }
                 catch (InterruptedException ex) { }

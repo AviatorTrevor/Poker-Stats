@@ -9,12 +9,7 @@ import java.util.List;
 public class PokerStats {
 
     public static void main(String[] args) {
-        //playRandomGame(2); //2 players, random hole cards
-        double seconds = 0;
-        for (int i = 0; i < 5; i++) {
-            seconds += playSpecificHoleCards();
-        }
-        System.out.println("Average game was " + seconds / 5 + " seconds");
+        playRandomGame(3); //2 players, random hole cards
     }
     
     private static double playSpecificHoleCards() {

@@ -9,7 +9,6 @@ public class Game {
         for (int i = 0; i < cNumberOfThreads; i++) {
             Hand hand = new Hand(this);
             hand.start();
-            mThreadPool.add(hand);
         }
         for (int i = 0; i < numberOfPlayers; i++) {
             Player player = new Player();
@@ -30,7 +29,9 @@ public class Game {
         for (int i = 0; i < cNumberOfThreads; i++) {
             Hand hand = new Hand(this);
             hand.start();
-            mThreadPool.add(hand);
+            synchronized (mGameMutex) {
+                mThreadPool.add(hand);
+            }
         }
         mPlayers = players;
         
@@ -70,7 +71,7 @@ public class Game {
             System.out.println("Waiting for hands to finish " + getThreadCount() + " Count: " + mCounter);
             synchronized(mGameMutex) {
                 try {
-                    mGameMutex.wait(1000);
+                    mGameMutex.wait(100);
                 }
                 catch (InterruptedException ex) { }
             }
@@ -91,7 +92,9 @@ public class Game {
         
         Hand hand = new Hand(this);
         hand.start();
-        mThreadPool.add(hand);
+        synchronized (mGameMutex) {
+            mThreadPool.add(hand);
+        }
         
         Player playerA = new Player();
         playerA.dealHoleCards(new Card(Card.CardValue.Four, Card.CardSuit.Clubs), new Card(Card.CardValue.Jack, Card.CardSuit.Spades));
@@ -136,7 +139,6 @@ public class Game {
                 }
             }
             Hand hand = mThreadPool.remove(0);
-            //System.out.println("Thread Pool Size: " + mThreadPool.size() + " (getThread)");
             return hand;
         }
     }
@@ -144,7 +146,6 @@ public class Game {
     public void threadFinished(Hand hand) {
         synchronized (mGameMutex) {
             mThreadPool.add(hand);
-            //System.out.println("Thread Pool Size: " + mThreadPool.size() + " (threadFinished)");
             mGameMutex.notifyAll();
         }
     }
@@ -162,5 +163,5 @@ public class Game {
     private CardDeck mCardDeck = new CardDeck();
     private final Object mGameMutex = new Object();
     private List<Hand> mThreadPool = new ArrayList<>();
-    private final int cNumberOfThreads = Runtime.getRuntime().availableProcessors();
+    private final int cNumberOfThreads = (int)(Runtime.getRuntime().availableProcessors() * 1.5);
 }
