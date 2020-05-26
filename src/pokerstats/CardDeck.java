@@ -6,8 +6,8 @@ import java.util.Random;
 
 public class CardDeck {
     public CardDeck() {
-        for (CardSuit suit : CardSuit.values()) {
-            for (CardValue value : CardValue.values()) {
+        for (Card.CardSuit suit : Card.CardSuit.values()) {
+            for (Card.CardValue value : Card.CardValue.values()) {
                 mCards.add(new Card(value, suit));
             }
         }
@@ -21,7 +21,7 @@ public class CardDeck {
         return mCards.remove(index);
     }
     
-    public Card dealSpecificCard(CardValue value, CardSuit suit) {
+    public Card dealSpecificCard(Card.CardValue value, Card.CardSuit suit) {
         return mCards.remove(suit.ordinal() * 13 + value.ordinal());
     }
     
