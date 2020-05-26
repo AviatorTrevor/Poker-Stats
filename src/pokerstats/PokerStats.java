@@ -9,7 +9,8 @@ import java.util.List;
 public class PokerStats {
 
     public static void main(String[] args) {
-        playRandomGame(3); //2 players, random hole cards
+        //playRandomGame(2); //2 players, random hole cards
+        playEveryPossiblePokerGame(2);
     }
     
     private static double playSpecificHoleCards() {
@@ -36,16 +37,61 @@ public class PokerStats {
     }
     
     private static void playEveryPossiblePokerGame(int numberOfPlayers) {
-        //I haven't finishing implementing this, but this will go through every possible poker game imaginable given X number of players
         CardDeck cardDeck = new CardDeck();
         List<Player> players = new ArrayList<>();
+        List<Integer> playerHoleCardIndexes = new ArrayList<>();
+        int counter = 1;
         for (int i = 0; i < numberOfPlayers; i++) {
-            for (int a = 0; a < cardDeck.size() - 1; a++) {
-                for (int b = 0; b < cardDeck.size(); b++) {
-                    //TODO need to finish
+            playerHoleCardIndexes.add(i * 2);
+            playerHoleCardIndexes.add(i * 2 + 1);
+        }
+
+        while (dealCards(playerHoleCardIndexes, playerHoleCardIndexes.size() - 1)) {
+            for (int i = 0; i < numberOfPlayers; i++) {
+                for (int j = 0; j < numberOfPlayers; j++) {
+                    Player newPlayer = new Player();
+                    newPlayer.dealHoleCards(cardDeck.getCommunityCard(playerHoleCardIndexes.get(((i * 2)     + (j * 2)) % (numberOfPlayers * 2))),
+                                            cardDeck.getCommunityCard(playerHoleCardIndexes.get(((i * 2 + 1) + (j * 2)) % (numberOfPlayers * 2))));
+                    players.add(newPlayer);
                 }
+                Game theGame = new Game(players);
+                System.out.println("Completed Game " + counter + " in " + theGame.getSecondsToPlayAllGames() + " seconds");
+                players.clear();
+                counter++;
             }
         }
     }
     
+    private static boolean dealCards(List<Integer> cardIndexes, int indexToIncrement) {
+        int value = cardIndexes.get(indexToIncrement);
+        if (indexToIncrement == cardIndexes.size() - 1) {
+            if (value + 1 < CardDeck.cCardsInDeck) {
+                cardIndexes.set(indexToIncrement, value + 1);
+                return true;
+            }
+            else {
+                cardIndexes.set(indexToIncrement, cardIndexes.get(indexToIncrement - 1) + 2);
+                return dealCards(cardIndexes, indexToIncrement - 1);
+            }
+        }
+        else if (indexToIncrement == 0) {
+            if (value + 1 < cardIndexes.get(indexToIncrement + 1)) {
+                cardIndexes.set(indexToIncrement, value + 1);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            if (value + 1 < cardIndexes.get(indexToIncrement + 1)) {
+                cardIndexes.set(indexToIncrement, value + 1);
+                return true;
+            }
+            else {
+                cardIndexes.set(indexToIncrement, cardIndexes.get(indexToIncrement - 1) + 2);
+                return dealCards(cardIndexes, indexToIncrement - 1);
+            }
+        }
+    }
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 public class CardDeck {
+    public static final int cCardsInDeck = 52;
+
     public CardDeck() {
         for (Card.CardSuit suit : Card.CardSuit.values()) {
             for (Card.CardValue value : Card.CardValue.values()) {
