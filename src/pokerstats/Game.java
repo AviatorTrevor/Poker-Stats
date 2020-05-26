@@ -66,11 +66,6 @@ public class Game {
             }
         }
         
-        try {
-            Thread.sleep(5000);
-        }
-        catch (InterruptedException ex) {}
-        
         while (getThreadCount() > 0) {
             System.out.println("Waiting for hands to finish " + getThreadCount() + " Count: " + mCounter);
             synchronized(mGameMutex) {
